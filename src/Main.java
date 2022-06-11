@@ -10,10 +10,10 @@ public class Main {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOLS);
         AccountService accountService = new AccountService(0);
         int min = 10;
-        int max = 10;
+        int max = 100;//можно поставить 10 для проверки=> должно получить 30
         for (int i = 0; i < THREAD_POOLS; i++) {
             int numRandom = (int) (Math.random() * (max + 1 - min) + min);
-            executorService.submit(()->accountService.atomicLong.addAndGet(numRandom));
+            executorService.submit(()->accountService.setResult(numRandom)); //засылаем всё в атомик
         }
         executorService.awaitTermination(3, TimeUnit.SECONDS);
         System.out.println(accountService);
